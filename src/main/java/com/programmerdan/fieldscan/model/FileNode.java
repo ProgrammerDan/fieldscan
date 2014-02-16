@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 
 /**
  * Basic file node. Extensions will probably just be additions to this file.
@@ -20,7 +21,13 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @Table(name="file_node")
-public class FileNode {
+public class FileNode implements BaseNode, Serializable {
+
+	/**
+	 * Internal serial ID to allow other methods of storage besides
+	 * JDBC.
+	 */
+	private static final long serialVersionUID = 71375247001;
 
 	@Id
 	@GeneratedValue(strategy=SEQUENCE)
@@ -42,7 +49,7 @@ public class FileNode {
 	@Column(name="is_gone", nullable=false, columnDefinition="is_gone BOOLEAN NOT NULL DEFAULT false")
 	private Boolean isGone;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="dir_node_id", table="dir_node", referencedColumnName="id",
 			nullable=false);
 	private DirNode dirNode;

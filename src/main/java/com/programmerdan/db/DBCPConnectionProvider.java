@@ -13,6 +13,8 @@ import org.hibernate.connection.ConnectionProviderFactory;
 
 import org.hibernate.cfg.Environment;
 
+import org.hibernate.HibernateException;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 

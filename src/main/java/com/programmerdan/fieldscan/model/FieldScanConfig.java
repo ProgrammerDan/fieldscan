@@ -47,6 +47,9 @@ public class FieldScanConfig implements Serializable{
 	@Column(name="description")
 	private String description;
 
+	/**
+	 * Ignored for now. TODO: add support for this.
+	 */
 	@Column(name="is_parallel_deduplication", nullable=false)
 	private Boolean isParallelDeduplication;
 

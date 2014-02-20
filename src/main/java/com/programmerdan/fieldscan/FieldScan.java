@@ -6,14 +6,25 @@ import com.programmerdan.fieldscan.model.BaseNode;
 import com.programmerdan.fieldscan.model.FieldScanStatistics;
 
 import com.programmerdan.fieldscan.FieldScanException;
+import com.programmerdan.fieldscan.RootPathInvalid;
 import com.programmerdan.fieldscan.NodeProcessor;
 
 import com.programmerdan.fieldscan.dao.FileNodeDao;
 import com.programmerdan.fieldscan.dao.DirNodeDao;
 import com.programmerdan.fieldscan.dao.FieldScanStatisticsDao;
+import com.programmerdan.fieldscan.dao.FieldScanConfigDao;
+import com.programmerdan.fieldscan.dao.NodeProcessorConfigDao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
+import java.nio.file.FileSystems;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import java.nio.file.Files;
 
 /**
  * Basic FieldScan functionality class. Basically, it hosts a 
@@ -34,6 +45,14 @@ public class FieldScan {
 	private static final Logger log = LoggerFactory.getLogger(
 			FieldScan.class);
 
+	private FileNodeDao fileDao;
+	private DirNodeDao dirDao;
+	private FieldScanStatisticsDao statsDao;
+	private FieldScanConfigDao configDao;
+	private NodeProcessorConfigDao processorDao;
+
+	private NodeProcessor rootProcessor;
+
 	/**
 	 * Do Scan is the whole point of this class. It's basically 
 	 * a stack-based file system traversal mechanism, with a stack
@@ -43,6 +62,14 @@ public class FieldScan {
 	 * a file processor that detects file type could in turn add
 	 * other processors that do feature extraction, etc. to better
 	 * determine duplication later.
+	 *
+	 * Some more details on the core of this method:
+	 * This is a very simple algorithm. Basically, while there
+	 * are paths/files to process, add the root processor.
+	 * Then, execute the processors. Processors have access to
+	 * the stack and queue, so they can add more processors to the
+	 * processing of a particular file. They can also generate more
+	 * files by adding them to the stack.
 	 * 
 	 * @param path Starting path
 	 * @return {@link FieldScanStatistics} object containing statistics on
@@ -51,6 +78,45 @@ public class FieldScan {
 	 *   throws a subclass of FieldScanException.
 	 */
 	public FieldScanStatistics doScan(String path) throws FieldScanException {
-		
+		// Make sure the path is valid before we go any further.
+		if (path == null || path.trim().equals("")) {
+			throw new RootPathInvalid(path);
+		}
+		Path firstPath = null;
+		try {
+			firstPath = FileSystems.getDefault().getPath(path);
+		} catch (InvalidPathException ipe) {
+			throw new RootPathInvalid(path, ipe);
+		}
+		if (firstPath == null) {
+			throw new RootPathInvalid(path);
+		}
+
+		// Using concurrent linked queues to allow more complex, multi-threaded
+		// implementations in the future.
+		ConcurrentLinkedQueue processorQueue<NodeProcessor> =
+				new ConcurrentLinkedQueue();
+		ConcurrentLinkedDeque fileStack<Path> = new ConcurrentLinkedDeque();
+
+		if (!fileStack.offerFirst(firstPath)) {
+			throw new FieldScanException("Exceeded path stack depth.");
+		}
+
+		while (fileStack.peekFirst() != null) {
+			Path nextFile = fileStack.pollFirst();
+
+			// first things first. Start with root processor.
+			if (!processorQueue.offer(rootProcessor)) {
+				throw new FieldScanException("Exceeded processing queue depth.");
+			}
+
+			while (processorQueue.peek() != null) {
+				NodeProcessor nextProcessor = processorQueue.poll();
+
+				nextProcessor.process(fileStack, processorQueue, this);
+			}
+		}
+
+		// All Done.
 	}
 }

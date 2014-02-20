@@ -1,5 +1,7 @@
 package com.programmerdan.fieldscan.dao;
 
+import java.util.Set;
+
 /**
  * Simple DAO pattern to keep my data access organized.
  * Probably overkill for this project, so I might strip

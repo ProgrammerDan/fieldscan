@@ -2,12 +2,15 @@ package com.programmerdan.fieldscan;
 
 import com.programmerdan.fieldscan.model.FileNode;
 import com.programmerdan.fieldscan.model.DirNode;
+import com.programmerdan.fieldscan.model.BaseNode;
 import com.programmerdan.fieldscan.model.FieldScanStatistics;
 
 import com.programmerdan.fieldscan.FieldScanException;
+import com.programmerdan.fieldscan.NodeProcessor;
 
 import com.programmerdan.fieldscan.dao.FileNodeDao;
 import com.programmerdan.fieldscan.dao.DirNodeDao;
+import com.programmerdan.fieldscan.dao.FieldScanStatisticsDao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

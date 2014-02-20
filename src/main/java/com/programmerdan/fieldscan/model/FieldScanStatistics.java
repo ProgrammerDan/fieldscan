@@ -9,6 +9,14 @@ import javax.persistence.Column;
 
 import java.sql.Date;
 
+/**
+ * Basic statistics bean for executions of {@link FieldScan#doScan}
+ * 
+ * @author Daniel Boston <programmerdan@gmail.com>
+ * @since 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT February 17, 2014
+ *   Basic version, with simple statistics.
+ */
 @Entity
 @Table(name="statistics")
 public class FieldScanStatistics implements Serializable {
@@ -55,3 +63,140 @@ public class FieldScanStatistics implements Serializable {
 	@Column(name="count_dir_nodes_gone", nullable=false)
 	private Long countDirNodesGone;
 
+	public FieldScanStatistics() {
+		id = null;
+		scanBegin = null;
+		scanEnd = null;
+		filesProcessed = null;
+		totalFileProcessingTime = null;
+		dirsProcessed = null;
+		totalDirProcessingTime = null;
+		countFileNodesAdded = null;
+		countDirNodesAdded = null;
+		countFileNodesGone = null;
+		countDirNodesGone = null;
+	}
+
+	public FieldScanStatistics(Long id, Date scanBegin, Date scanEnd,
+			Long filesProcessed, Long totalFileProcessingTime,
+			Long dirsProcessed, Long totalDirProcessingTime,
+			Long countFileNodesAdded, Long countDirNodesAdded,
+			Long countFileNodesGone, Long countDirNodesGone) {
+		this.id = id;
+		this.scanBegin = scanBegin;
+		this.scanEnd = scanEnd;
+		this.filesProcessed = filesProcessed;
+		this.totalFileProcessingTime = totalFileProcessingTime;
+		this.dirsProcessed = dirsProcessed;
+		this.totalDirProcessingTim = totalDirProcessingTime;
+		this.countFileNodesAdded = countFileNodesAdded;
+		this.countDirNodesAdded = countDirNodesAdded;
+		this.countFileNodesGone = countFileNodesGone;
+		this.countDirNodesGone = countDirNodesGone;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getScanBegin() {
+		return scanBegin;
+	}
+
+	public void setScanBegin(Date scanBegin) {
+		this.scanBegin = scanBegin;
+	}
+
+	public Date getScanEnd() {
+		return scanEnd;
+	}
+
+	public void setScanEnd(Date scanEnd) {
+		this.scanEnd = scanEnd;
+	}
+
+	public Long getFilesProcessed() {
+		return filesProcessed;
+	}
+
+	public void setFilesProcessed(Long fileProcessed) {
+		this.filesProcessed = filesProcessed;
+	}
+
+	public Long incFilesProcessed() {
+		if (this.filesProcessed != null) {
+			this.filesProcessed++;
+		} else { 
+			this.filesProcesesd = 0L;
+		return this.filesProcessed;
+	}
+
+	public Long getTotalFileProcessingTime() {
+		return totalFileProcessingTime;
+	}
+
+	public void setTotalFileProcessingTime(Long totalFileProcessingTime) {
+		this.totalFileProcessingTime = totalFileProcessingTime;
+	}
+
+	public Long getDirsProcessed() {
+		return dirsProcessed;
+	}
+
+	public void setDirsProcessed(Long dirsProcessed) {
+		this.dirsProcessed = dirsProcessed;
+	}
+
+	public Long incDirsProcessed() {
+		if (this.dirsProcessed != null) {
+			this.dirsProcessed++;
+		} else {
+			this.dirsProcessed = 0L;
+		}
+		return this.dirsProcessed;
+	}
+
+	public Long getTotalDirProcessingTime() {
+		return totalDirProcessingTime;
+	}
+
+	public void setTotalDirProcessingTime(Long totalDirProcessingTime) {
+		this.totalDirProcessingTime = totalDirProcessingTime;
+	}
+
+	public Long getCountFileNodesAdded() {
+		return countFileNodesAdded;
+	}
+
+	public void setCountFileNodesAdded(Long countFileNodesAdded) {
+		this.countFileNodesAdded = countFileNodesAdded;
+	}
+
+	public Long getCountDirNodesAdded() {
+		return countDirNodesAdded;
+	}
+
+	public void setCountDirNodesAdded(Long countDirNodesAdded) {
+		this.countDirNodesAdded = countDirNodesAdded;
+	}
+
+	public Long getCountFileNodesGone() {
+		return countFileNodesGone;
+	}
+
+	public void setCountFileNodesGone(Long countFileNodesGone) {
+		this.countFileNodesGone = countFileNodesGone;
+	}
+
+	public Long getCountDirNodesGone() {
+		return countDirNodesGone;
+	}
+	
+	public void setCountDirNodesGone(Long countDirNodesGone) {
+		this.countDirNodesGone = countDirNodesGone;
+	}
+}

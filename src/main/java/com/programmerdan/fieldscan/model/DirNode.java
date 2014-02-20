@@ -1,5 +1,7 @@
 package com.programmerdan.fieldscan.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import javax.persistence.FetchType;
  *
  * TODO: Comment appropriately
  *
+ * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
  * @version 0.1-SNAPSHOT Feb 16, 2014
  *   Initial version, sets up a simple node for future comparisons.

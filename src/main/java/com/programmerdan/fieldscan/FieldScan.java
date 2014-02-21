@@ -26,6 +26,9 @@ import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.Files;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
+
 /**
  * Basic FieldScan functionality class. Basically, it hosts a 
  * method that will, based on a configuration in database and a
@@ -45,6 +48,8 @@ public class FieldScan {
 	private static final Logger log = LoggerFactory.getLogger(
 			FieldScan.class);
 
+	private EntityManagerFactory persistenceFactory;
+
 	private FileNodeDao fileDao;
 	private DirNodeDao dirDao;
 	private FieldScanStatisticsDao statsDao;
@@ -52,6 +57,34 @@ public class FieldScan {
 	private NodeProcessorConfigDao processorDao;
 
 	private NodeProcessor rootProcessor;
+
+	/**
+	 * Setup method that does some configuration of FieldScan on the
+	 * downlow. It makes sure the database connection exists and that
+	 * the configuration mentioned exists.
+	 *
+	 * It then attempts to load the root processor, and register
+	 * all the rest. Note this method can be called repeatedly, so
+	 * as to allow dynamic reconfiguration of a FieldScan process while
+	 * running. Could be useful for future services based implementations
+	 * where a configuration could change and it's desirable to refresh
+	 * FieldScan without restarting it or its host container.
+	 *
+	 * @param configName the name of the configuration to look up.
+	 * @return True if able to set up without error, False otherwise.
+	 * @throws FieldScanSetupException if there is a problem.
+	 */
+	public boolean setup(String configName) throws FieldScanSetupException {
+		try {
+			if (persistenceFactory) {
+				persistenceFactory = null; // throw it away
+			}
+			persistenceFactory = Persistence.createEntityManagerFactory("com.programmerdan.fieldscan.jpa");
+		} catch (IllegalStateException ise) {
+			throw new FieldScanSetupException(ise);
+		}
+	}
+
 
 	/**
 	 * Do Scan is the whole point of this class. It's basically 

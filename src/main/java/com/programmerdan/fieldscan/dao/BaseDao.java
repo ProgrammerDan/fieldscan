@@ -18,5 +18,4 @@ public interface BaseDao<T,K> {
 	public boolean save(T obj);
 	public Set<T> findAll();
 	public boolean delete(T obj);
-	public T create();
 }

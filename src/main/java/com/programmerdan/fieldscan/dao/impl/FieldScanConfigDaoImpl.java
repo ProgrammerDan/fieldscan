@@ -63,9 +63,9 @@ public class FieldScanConfigDaoImpl extends BaseDaoImpl<FieldScanConfig, Long>
 			Root<FieldScanConfig> fsc = query.from(FieldScanConfig.class);
 			query.where(cb.equals(fsc.get(FieldScanConfig_.configName), name));
 
-			found = em.createQuery(query).getResultList();
+			found = em.createQuery(query).getSingleResult();
 		} catch (PersistenceException pe) {
-			baseLog.error(pe);
+			log.error(pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}

@@ -38,9 +38,15 @@ public abstract BaseDaoImpl<T,K> implements BaseDao<T,K> {
 	 */
 	public BaseDaoImpl() {
 		this.entityType = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0]);
+				.getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
+	/**
+	 * Returns the parameterized class type that the instance of this dao
+	 * works with.
+	 *
+	 * @return the Class type for T
+	 */
 	public Class<T> getTypeClass() {
 		return entityType;
 	}

@@ -4,6 +4,7 @@ import com.programmerdan.fieldscan.model.FileNode;
 import com.programmerdan.fieldscan.model.DirNode;
 import com.programmerdan.fieldscan.model.BaseNode;
 import com.programmerdan.fieldscan.model.FieldScanStatistics;
+import com.programmerdan.fieldscan.model.FieldScanConfig;
 
 import com.programmerdan.fieldscan.FieldScanException;
 import com.programmerdan.fieldscan.RootPathInvalid;
@@ -20,11 +21,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentHashMap;
 
 import java.nio.file.FileSystems;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
@@ -57,6 +60,8 @@ public class FieldScan {
 	private NodeProcessorConfigDao processorDao;
 
 	private NodeProcessor rootProcessor;
+
+	private Hash<String, NodeProcessor> processorRegistry;
 
 	/**
 	 * Setup method that does some configuration of FieldScan on the

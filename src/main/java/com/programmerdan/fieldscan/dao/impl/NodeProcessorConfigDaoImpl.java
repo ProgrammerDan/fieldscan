@@ -3,6 +3,7 @@ package com.programmerdan.fieldscan.dao.impl;
 import com.programmerdan.fieldscan.dao.NodeProcessorConfigDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.NodeProcessorConfig;
+import com.programmerdan.fieldscan.model.FieldScanConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,7 @@ import javax.persistence.PersistenceException;
 /**
  * This DAO pattern does a cross implementation and extension of the
  * Base types, and implements just those extra methods as necessary.
- * This is no exception, and implements the FindByName. It also serves
- * as a learning vehicle for me and true understanding of CriteriaBuilder's
- * nuances. So bear with me.
+ * This is no exception, and implements the FindByFieldScanConfig. 
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT

@@ -1,6 +1,6 @@
 package com.programmerdan.fieldscan.dao;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Simple DAO pattern to keep my data access organized.
@@ -16,6 +16,6 @@ public interface BaseDao<T,K> {
 	
 	public T find(K key);
 	public boolean save(T obj);
-	public Set<T> findAll();
+	public List<T> findAll();
 	public boolean delete(T obj);
 }

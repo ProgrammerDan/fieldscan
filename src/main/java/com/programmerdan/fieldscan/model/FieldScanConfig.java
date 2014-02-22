@@ -64,18 +64,18 @@ public class FieldScanConfig implements Serializable{
 
 	public FieldScanConfig() {
 		id = null;
-		name = null;
+		configName = null;
 		description = null;
 		isParallelDeduplication= null;
 		rootProcessor = null;
 		registeredProcessors = null;
 	}
 
-	public FieldScanConfig(Long id, String name, String description,
+	public FieldScanConfig(Long id, String configName, String description,
 			Boolean isParallelDeduplication, NodeProcessorConfig rootProcessor,
 			Set<NodeProcessorConfig> registeredProcessors) {
 		this.id = id;
-		this.name = name;
+		this.configName = configName;
 		this.description = description;
 		this.isParallelDeduplication = isParallelDeduplication;
 		this.rootProcessor = rootProcessor;
@@ -90,12 +90,12 @@ public class FieldScanConfig implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getConfigName() {
+		return configName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setConfigName(String configName) {
+		this.configName = configName;
 	}
 
 	public String getDescription() {

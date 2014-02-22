@@ -1,6 +1,6 @@
 package com.programmerdan.fieldscan.dao;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * NodeProcessorConfig DAO, which adds support for find all by {@link FieldScanConfig}.
@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface NodeProcessorConfigDao implements BaseDao<NodeProcessorConfig,Long>{
 	
-	public Set<NodeProcessorConfig> findAllByFieldScanConfig(FieldScanConfig config);
+	public List<NodeProcessorConfig> findAllByFieldScanConfig(FieldScanConfig config);
 }
 
 

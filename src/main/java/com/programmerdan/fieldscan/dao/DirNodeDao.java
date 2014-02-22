@@ -3,7 +3,7 @@ package com.programmerdan.fieldscan.dao;
 import com.programmerdan.fieldscan.model.FileNode;
 import com.programmerdan.fieldscan.model.DirNode;
 
-import java.util.Set;
+import java.util.Link;
 import java.nio.Path;
 
 /**
@@ -17,7 +17,7 @@ import java.nio.Path;
 public interface DirNodeDao implements BaseDao<DirNode,Long>{
 	
 	public DirNode findFirstByPath(Path path);
-	public Set<DirNode> findAllByPath(Path path);
+	public List<DirNode> findAllByPath(Path path);
 }
 
 

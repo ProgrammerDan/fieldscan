@@ -29,7 +29,7 @@ import com.programmerdan.fieldscan.model.FieldCanConfig;
  */
 @Entity
 @Table(name="processor_config")
-public class FieldScanConfig implements Serializable{
+public class NodeProcessorConfig implements Serializable{
 
 	/**
 	 * Internal serial ID to allow other methods of storage besides

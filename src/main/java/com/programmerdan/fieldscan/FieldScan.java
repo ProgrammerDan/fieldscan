@@ -88,6 +88,14 @@ public class FieldScan {
 		} catch (IllegalStateException ise) {
 			throw new FieldScanSetupException(ise);
 		}
+		processorRegistry = new ConcurrentHashMap<String, NodeProcessor>();
+
+		this.configDao = new FieldScanConfigDaoImpl();
+		this.statsDao = new FieldScanStatisticsDaoImpl();
+		this.fileDao = new FileNodeDaoImpl();
+		this.dirDao = new DirNodeDaoImpl();
+		this.processorDao = new NodeProcessorConfigDaoImpl();
+
 	}
 
 

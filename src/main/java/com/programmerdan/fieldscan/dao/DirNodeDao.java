@@ -16,8 +16,8 @@ import java.nio.Path;
  */
 public interface DirNodeDao implements BaseDao<DirNode,Long>{
 	
+	public List<DirNode> findAllChildren(DirNode dirNode);
 	public DirNode findFirstByPath(Path path);
-	public List<DirNode> findAllByPath(Path path);
 }
 
 

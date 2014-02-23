@@ -36,25 +36,32 @@ public class DirNode implements BaseNode, Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name="id")
-	public Long id;
+	private Long id;
 
 	@Column(name="directory_name", nullable=false)
-	public String directoryName;
+	private String directoryName;
 
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(referencedColumnName="dir_node_id", table="file_node")
-	public Set<FileNode> fileNodes;
+	private Set<FileNode> fileNodes;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(referencedColumnName="id", table="dir_node", name="parent_dir", nullable=true)
+	private DirNode parentDir;
 
 	public DirNode() {
 		this.id = null;
 		this.directoryName = null;
 		this.fileNodes = null;
+		this.parentDir = null;
 	}
 
-	public DirNode(Long id, String directoryName, Set<FileNode> fileNodes) {
+	public DirNode(Long id, String directoryName, Set<FileNode> fileNodes,
+			DirNode parentDir) {
 		this.id = id;
 		this.directoryName = directoryName;
 		this.fileNodes = fileNodes;
+		this.parentDir = parentDir;
 	}
 
 	public Long getId() {
@@ -81,5 +88,13 @@ public class DirNode implements BaseNode, Serializable{
 
 	public void setFileNodes(Set<FileNode> fileNodes) {
 		this.fileNodes = fileNodes;
+	}
+
+	public DirNode getParentDir() {
+		return parentDir;
+	}
+
+	public void setParentDir(DirNode parentDir) {
+		this.parentDir = parentDir;
 	}
 }

@@ -4,7 +4,6 @@ import com.programmerdan.fieldscan.model.FileNode;
 import com.programmerdan.fieldscan.model.DirNode;
 
 import java.util.List;
-import java.nio.Path;
 
 /**
  * FileNode DAO, which adds support for find by similarity and find by path.
@@ -17,8 +16,6 @@ import java.nio.Path;
 public interface FileNodeDao implements BaseDao<FileNode,Long>{
 	
 	public List<FileNode> findAllBySimilarity(FileNode similar);
-	public FileNode findFirstByPath(Path path);
-	public List<FileNode> findAllByPath(Path path);
 	public List<FileNode> findAllByDirNode(DirNode dirNode);
 }
 

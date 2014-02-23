@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.programmerdan.fieldscan.dao.BaseDao;
 import com.programmerdan.fieldscan.dao.NoTransactionAvailableException;
+import com.programmerdan.fieldscan.dao.NoEntityManagerAssignedException;
 import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 
 import com.slf4j.LoggerFactory;

@@ -68,8 +68,11 @@ public class FieldScanDaoFactory {
 	 *
 	 * @param daoType the Class type of the object to get a DAO for.
 	 * @return the DAO implementation as the generic {@link BaseDao}.
+	 * @throw {@link DaoNotAvailableException} if unable to find a DAO for
+	 *   the class type requested.
 	 */
-	public <T> BaseDao<T, ?> getDaoFor(Class<T> daoType) {
+	public <T> BaseDao<T, ?> getDaoFor(Class<T> daoType) throws
+			DaoNotAvailableException {
 		if (daoType.equals(FieldScanConfig.class) ) {
 			return getFieldScanConfigDao();
 		} else if (daoType.equals(NodeProcessorConfig.class) ) {

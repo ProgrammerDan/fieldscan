@@ -1,5 +1,8 @@
 package com.programmerdan.db;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -8,18 +11,26 @@ import java.util.Map;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.connection.ConnectionProviderFactory;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator;
+
+import org.hibernate.service.spi.Stoppable;
+import org.hibernate.service.spi.Configurable;
 
 import org.hibernate.cfg.Environment;
 
 import org.hibernate.HibernateException;
+import org.hibernate.service.UnknownUnwrapTypeException;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.commons.dbcp2.BasicDataSourceFactory;
+import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp.BasicDataSourceFactory;
 
 /**
  * LARGELY based on http://www.mkyong.com/hibernate/how-to-configure-dbcp-connection-pool-in-hibernate/ and http://wiki.apache.org/commons/DBCP/Hibernate
+ *
+ * Note that both the above links are VERY out of date, so trying some monkey
+ * patching based on hibernate-orm's github version of Proxool provider.
+ * I'll probably wind up making many more changes before I'm done.
  *
  * Wraps DBCP with a Hibernate-compatible connection provider so that
  * we can benefit from DBCP's connection pooling and still use Hibernate.
@@ -30,7 +41,8 @@ import org.apache.commons.dbcp2.BasicDataSourceFactory;
  *   Might be the only version of this boilerplate. Provides Hibernate
  *   with a path to DBCP.
  */
-public class DBCPConnectionProvider implements ConnectionProvider {
+public class DBCPConnectionProvider implements ConnectionProvider, Stoppable,
+		Configurable {
 	private static final Logger log = LoggerFactory.getLogger(
 			DBCPConnectionProvider.class);
 	
@@ -46,6 +58,18 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 	 * 
 	 * @param props hibernate configuration file
 	 */
+	@Override
+	public void configure(Map props) {
+		try {
+			Properties prop = new Properties();
+			prop.putAll(props);
+			configure(prop);
+		} catch (HibernateException he) {
+			log.error("Error configuring", he);
+		}
+	}
+
+
 	public void configure(Properties props) throws HibernateException {
 		try {
 			log.debug("Setting up DBCPConnectionProvider");
@@ -84,11 +108,11 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 			}
 
 			// Copying all "driver" properties into "connectionProperties"
-			Properties driverProps = ConnectionProviderFactor
+			Properties driverProps = ConnectionProviderInitiator
 					.getConnectionProperties(props);
 			if (driverProps.size() > 0) {
 				StringBuffer connectionProperties = new StringBuffer();
-				Boolean first = True;
+				Boolean first = true;
 				for (Map.Entry entry : driverProps.entrySet()) {
 					if (!first) {
 						connectionProperties.append(";");
@@ -97,7 +121,7 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 					String value = (String) entry.getValue();
 					connectionProperties.append(key).append("=")
 							.append(value);
-					first = False;
+					first = false;
 				}
 
 				dbcpProperties.put("connectionProperties",
@@ -133,7 +157,7 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 
 			// Force the data source to initialize.
 			Connection testConn = ds.getConnection();
-			conn.close();
+			testConn.close();
 
 			logStatistics();
 		} catch (Exception e) { // TODO: Let's catch some real exceptions
@@ -156,6 +180,7 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 	 * @return a connection from the pool
 	 * @see ConnectionProvider#getConnection()
 	 */
+	@Override
 	public Connection getConnection() throws SQLException {
 		Connection conn = null;
 		try {
@@ -172,6 +197,7 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 	 * @param conn the connection to close
 	 * @see ConnectionProvider#closeConnection(Connection)
 	 */
+	@Override
 	public void closeConnection(Connection conn) throws SQLException {
 		try {
 			conn.close();
@@ -185,7 +211,17 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 	 * 
 	 * @see ConnectionProvider.close()
 	 */
+	@Deprecated
 	public void close() throws HibernateException {
+		stop();
+	}
+
+	/**
+	 * Apparently close was deprecated before 4.3.1, my base example
+	 * was hopelessly out of date. Hoping these changes fix the problem.
+	 */
+	@Override
+	public void stop() {
 		log.debug("Closing up the DBCPConnectionProvider");
 		logStatistics();
 		try {
@@ -196,7 +232,9 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 				log.warn("Cannot close DBCP pool (not initialized)");
 			}
 		} catch (Exception e) {
-			throw new HibernateException("Could not close DBCP pool", e);
+			final String msg = "Could not close DBCP pool";
+			log.error(msg, e);
+			throw new HibernateException(msg, e);
 		}
 		log.debug("Close DBCPConnectionProvider complete");
 	}
@@ -216,7 +254,33 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 	 * @return boolean indicating if Aggressive Release is supported
 	 * @see ConnectionProvider#supportsAggressiveRelease()
 	 */
+	@Override
 	public boolean supportsAggressiveRelease() {
 		return false;
+	}
+
+	/**
+	 * Borrowed from proxool implementation.
+	 * @see org.hibernate.proxool.internal.ProxoolConnectionProvider
+	 */
+	@Override
+	public boolean isUnwrappableAs(Class unwrapType) {
+		return ConnectionProvider.class.equals(unwrapType) ||
+				DBCPConnectionProvider.class.isAssignableFrom(unwrapType);
+	}
+
+	/**
+	 * Borrowed from proxool implementation.
+	 * @see org.hibernate.proxool.internal.ProxoolConnectionProvider
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T unwrap(Class<T> unwrapType) {
+		if ( ConnectionProvider.class.equals(unwrapType) ||
+				DBCPConnectionProvider.class.isAssignableFrom(unwrapType)) {
+			return (T) this;
+		} else {
+			throw new UnknownUnwrapTypeException(unwrapType);
+		}
 	}
 }

@@ -12,8 +12,8 @@ import com.programmerdan.fieldscan.dao.NoTransactionAvailableException;
 import com.programmerdan.fieldscan.dao.NoEntityManagerAssignedException;
 import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 
-import com.slf4j.LoggerFactory;
-import com.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  * implementation of base dao using the persistence api. 

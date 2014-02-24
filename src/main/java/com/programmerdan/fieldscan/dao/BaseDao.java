@@ -15,7 +15,7 @@ import java.util.List;
 public interface BaseDao<T,K> {
 	
 	public T find(K key);
-	public boolean save(T obj);
+	public void save(T obj);
 	public List<T> findAll();
 	public boolean delete(T obj);
 }

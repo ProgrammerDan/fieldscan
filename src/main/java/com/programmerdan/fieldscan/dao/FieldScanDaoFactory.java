@@ -1,10 +1,12 @@
 package com.programmerdan.fieldscan.dao;
 
+import com.programmerdan.fieldscan.dao.impl.FieldScanStatisticsDaoImpl;
 import com.programmerdan.fieldscan.dao.impl.FieldScanConfigDaoImpl;
 import com.programmerdan.fieldscan.dao.impl.NodeProcessorConfigDaoImpl;
 import com.programmerdan.fieldscan.dao.impl.FileNodeDaoImpl;
 import com.programmerdan.fieldscan.dao.impl.DirNodeDaoImpl;
 
+import com.programmerdan.fieldscan.dao.FieldScanStatisticsDao;
 import com.programmerdan.fieldscan.dao.FieldScanConfigDao;
 import com.programmerdan.fieldscan.dao.NodeProcessorConfigDao;
 import com.programmerdan.fieldscan.dao.FileNodeDao;
@@ -13,6 +15,7 @@ import com.programmerdan.fieldscan.dao.BaseDao;
 
 import com.programmerdan.fieldscan.dao.DaoNotAvailableException;
 
+import com.programmerdan.fieldscan.model.FieldScanStatistics;
 import com.programmerdan.fieldscan.model.FieldScanConfig;
 import com.programmerdan.fieldscan.model.NodeProcessorConfig;
 import com.programmerdan.fieldscan.model.FileNode;
@@ -56,7 +59,7 @@ public class FieldScanDaoFactory {
 	 *
 	 * @return the FieldScanDaoFactory instance
 	 */
-	public FieldScanDaoFactory getInstance() {
+	public static FieldScanDaoFactory getInstance() {
 		if (instance == null) {
 			instance = new FieldScanDaoFactory();
 		}
@@ -73,18 +76,19 @@ public class FieldScanDaoFactory {
 	 * @throw {@link DaoNotAvailableException} if unable to find a DAO for
 	 *   the class type requested.
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> BaseDao<T, ?> getDaoFor(Class<T> daoType) throws
 			DaoNotAvailableException {
 		if (daoType.equals(FieldScanConfig.class) ) {
-			return getFieldScanConfigDao();
+			return (BaseDao<T, ?>) getFieldScanConfigDao();
 		} else if (daoType.equals(NodeProcessorConfig.class) ) {
-			return getNodeProcessorConfigDao();
+			return (BaseDao<T, ?>) getNodeProcessorConfigDao();
 		} else if (daoType.equals(FileNode.class) ) {
-			return getFileNodeDao();
+			return (BaseDao<T, ?>) getFileNodeDao();
 		} else if (daoType.equals(DirNode.class) ) {
-			return getDirNodeDao();
+			return (BaseDao<T, ?>) getDirNodeDao();
 		} else if (daoType.equals(FieldScanStatistics.class) ) {
-			return getFieldScanStatisticsDao();
+			return (BaseDao<T, ?>) getFieldScanStatisticsDao();
 		} else {
 			throw new DaoNotAvailableException(daoType);
 		}

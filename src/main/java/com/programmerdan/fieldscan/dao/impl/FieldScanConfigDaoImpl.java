@@ -4,6 +4,7 @@ import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.FieldScanConfigDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.FieldScanConfig;
+import com.programmerdan.fieldscan.model.FieldScanConfig_;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,17 +58,17 @@ public class FieldScanConfigDaoImpl extends BaseDaoImpl<FieldScanConfig, Long>
 		FieldScanConfig found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<FieldScanConfig> FieldScanConfig_ = mm.entity(
-					FieldScanConfig.class);
+			//EntityType<FieldScanConfig> FieldScanConfig_ = mm.entity(
+			//		FieldScanConfig.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<FieldScanConfig> query =
 					cb.createQuery(FieldScanConfig.class);
 			Root<FieldScanConfig> fsc = query.from(FieldScanConfig.class);
-			query.where(cb.equals(fsc.get(FieldScanConfig_.configName), name));
+			query.where(cb.equal(fsc.get(FieldScanConfig_.configName), name));
 
 			found = em.createQuery(query).getSingleResult();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Unable to find by name", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}

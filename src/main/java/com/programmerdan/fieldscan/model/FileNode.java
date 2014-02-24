@@ -1,8 +1,11 @@
 package com.programmerdan.fieldscan.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -31,7 +34,7 @@ public class FileNode implements BaseNode, Serializable {
 	private static final long serialVersionUID = 71375247001L;
 
 	@Id
-	@GeneratedValue(strategy=SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name="id")
 	private Long id;
 
@@ -66,7 +69,7 @@ public class FileNode implements BaseNode, Serializable {
 	}
 
 	public FileNode(Long id, String fileName, Byte[] oneKbHash, 
-			Byte[] fullHash, String fileSize, Boolean isGone,
+			Byte[] fullHash, Long fileSize, Boolean isGone,
 			DirNode dirNode) {
 		this.id = id;
 		this.fileName = fileName;

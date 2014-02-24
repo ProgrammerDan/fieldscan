@@ -4,6 +4,7 @@ import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.NodeProcessorConfigDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.NodeProcessorConfig;
+import com.programmerdan.fieldscan.model.NodeProcessorConfig_;
 import com.programmerdan.fieldscan.model.FieldScanConfig;
 
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.PersistenceException;
+
+import java.util.List;
 
 /**
  * This DAO pattern does a cross implementation and extension of the
@@ -51,17 +54,17 @@ public class NodeProcessorConfigDaoImpl extends BaseDaoImpl<NodeProcessorConfig,
 		List<NodeProcessorConfig> found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<NodeProcessorConfig> NodeProcessorConfig_ = mm.entity(
-					NodeProcessorConfig.class);
+			//EntityType<NodeProcessorConfig> NodeProcessorConfig_ = mm.entity(
+			//		NodeProcessorConfig.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<NodeProcessorConfig> query =
 					cb.createQuery(NodeProcessorConfig.class);
 			Root<NodeProcessorConfig> fsc = query.from(NodeProcessorConfig.class);
-			query.where(cb.equals(fsc.get(NodeProcessorConfig_.baseConfig), config));
+			query.where(cb.equal(fsc.get(NodeProcessorConfig_.baseConfig), config));
 
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Could not find all by field scan config", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}

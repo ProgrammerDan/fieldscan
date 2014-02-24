@@ -4,15 +4,19 @@ import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.DirNodeDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.DirNode;
+import com.programmerdan.fieldscan.model.DirNode_;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Iterator;
 
 import java.nio.file.Path;
+import java.nio.file.LinkOption;
 
 import java.io.IOError;
+import java.io.IOException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -63,7 +67,7 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 		List<DirNode> found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<DirNode> DirNode_ = mm.entity(DirNode.class);
+			//EntityType<DirNode> DirNode_ = mm.entity(DirNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<DirNode> query = cb.createQuery(DirNode.class);
 			Root<DirNode> fsc = query.from(DirNode.class);
@@ -71,7 +75,7 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Unable to find all children", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -92,7 +96,7 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 		DirNode found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<DirNode> DirNode_ = mm.entity(DirNode.class);
+			//EntityType<DirNode> DirNode_ = mm.entity(DirNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<DirNode> query = cb.createQuery(DirNode.class);
 			Root<DirNode> fsc = query.from(DirNode.class);
@@ -104,7 +108,7 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 				);
 			found = em.createQuery(query).getSingleResult();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Unable to find root dir by directory name", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -124,14 +128,18 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 	public DirNode findFirstByPath(Path path) {
 		Path truePath = null;
 		try {
-			truePath = path.normalize().toAbsolutePath;
+			truePath = path.normalize().toAbsolutePath();
 			truePath = truePath.toRealPath(LinkOption.NOFOLLOW_LINKS);
 		} catch (IOError ioe) {
-			log.error(ioe);
+			log.error("File System error", ioe);
 			throw new FieldScanDaoException(
 					"File System unavailable, cannot resolve path", ioe);
+		} catch (IOException ioe2) {
+			log.error("File resolution error", ioe2);
+			throw new FieldScanDaoException(
+					"File resolution error, cannot realize path", ioe2);
 		} catch (SecurityException se) {
-			log.warn(se);
+			log.error("Security Failure", se);
 			throw new FieldScanDaoException(
 					"Insufficient Security to resolve path", se);
 		}
@@ -147,7 +155,7 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<DirNode> DirNode_ = mm.entity(DirNode.class);
+			//EntityType<DirNode> DirNode_ = mm.entity(DirNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 
 			CriteriaQuery<DirNode> query = null;
@@ -184,7 +192,7 @@ public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>
 
 			found = curDir;
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Failed to resolve from path", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}

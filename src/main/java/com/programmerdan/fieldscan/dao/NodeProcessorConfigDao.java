@@ -2,6 +2,9 @@ package com.programmerdan.fieldscan.dao;
 
 import java.util.List;
 
+import com.programmerdan.fieldscan.model.NodeProcessorConfig;
+import com.programmerdan.fieldscan.model.FieldScanConfig;
+
 /**
  * NodeProcessorConfig DAO, which adds support for find all by {@link FieldScanConfig}.
  *

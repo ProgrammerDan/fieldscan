@@ -4,7 +4,9 @@ import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.FileNodeDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.FileNode;
+import com.programmerdan.fieldscan.model.FileNode_;
 import com.programmerdan.fieldscan.model.DirNode;
+import com.programmerdan.fieldscan.model.DirNode_;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +60,7 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 		List<FileNode> found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
+			//EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<FileNode> query = cb.createQuery(FileNode.class);
 			Root<FileNode> fsc = query.from(FileNode.class);
@@ -66,7 +68,7 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Unable to find all by dir node", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -88,27 +90,28 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 		List<FileNode> found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
+			//EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<FileNode> query = cb.createQuery(FileNode.class);
 			Root<FileNode> fsc = query.from(FileNode.class);
-			query.where(cb.equal(fsc.get(FileNode_.fullHash),
-								 fileNode.getFullHash())
-				    .or(
-						cb.and(
-							cb.equal(fsc.get(FileNode_.oneKbHash), 
-									 fileNode.getOneKbHash()),
-							cb.equal(fsc.get(FileNode_.fileSize),
-									 fileNode.getFileSize()))
-						)
-					.and(
+			query.where(
+					cb.and(
+						cb.or(
+							cb.equal(fsc.get(FileNode_.fullHash),
+											 fileNode.getFullHash()),
+							cb.and(
+								cb.equal(fsc.get(FileNode_.oneKbHash), 
+										 fileNode.getOneKbHash()),
+								cb.equal(fsc.get(FileNode_.fileSize),
+										 fileNode.getFileSize()))
+							),
 						cb.notEqual(fsc.get(FileNode_.id),
 									fileNode.getId())
 						)
 					);
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Unable to find all by similarity", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -130,7 +133,7 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 		List<FileNode> found = null;
 		try {
 			Metamodel mm = em.getMetamodel();
-			EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
+			//EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<FileNode> query = cb.createQuery(FileNode.class);
 			Root<FileNode> fsc = query.from(FileNode.class);
@@ -142,7 +145,7 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 				);
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
-			log.error(pe);
+			log.error("Unable to find all by dir node and file name", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}

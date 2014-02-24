@@ -19,7 +19,7 @@ public class RootPathInvalid extends FieldScanException {
 	 * @param cause the underlying exception that led to this exception
 	 */
 	public RootPathInvalid(String invalidPath, Throwable cause) {
-		super("Invalid path given to start FieldScan: " + invalidPath, e);
+		super("Invalid path given to start FieldScan: " + invalidPath, cause);
 		this.invalidPath = invalidPath;
 	}
 

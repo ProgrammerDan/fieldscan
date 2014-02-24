@@ -10,6 +10,7 @@ import com.programmerdan.fieldscan.FieldScanException;
 import com.programmerdan.fieldscan.RootPathInvalid;
 import com.programmerdan.fieldscan.NodeProcessor;
 
+import com.programmerdan.fieldscan.dao.FieldScanDaoFactory;
 import com.programmerdan.fieldscan.dao.FileNodeDao;
 import com.programmerdan.fieldscan.dao.DirNodeDao;
 import com.programmerdan.fieldscan.dao.FieldScanStatisticsDao;
@@ -27,10 +28,14 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 
 /**
  * Basic FieldScan functionality class. Basically, it hosts a 
@@ -61,7 +66,7 @@ public class FieldScan {
 
 	private NodeProcessor rootProcessor;
 
-	private Hash<String, NodeProcessor> processorRegistry;
+	private Map<String, NodeProcessor> processorRegistry;
 
 	/**
 	 * Setup method that does some configuration of FieldScan on the
@@ -81,21 +86,24 @@ public class FieldScan {
 	 */
 	public boolean setup(String configName) throws FieldScanSetupException {
 		try {
-			if (persistenceFactory) {
+			if (persistenceFactory != null) {
 				persistenceFactory = null; // throw it away
 			}
 			persistenceFactory = Persistence.createEntityManagerFactory("com.programmerdan.fieldscan.jpa");
 		} catch (IllegalStateException ise) {
+			log.error("Failed to set up FieldScan", ise);
 			throw new FieldScanSetupException(ise);
 		}
 		processorRegistry = new ConcurrentHashMap<String, NodeProcessor>();
 
-		this.configDao = new FieldScanConfigDaoImpl();
-		this.statsDao = new FieldScanStatisticsDaoImpl();
-		this.fileDao = new FileNodeDaoImpl();
-		this.dirDao = new DirNodeDaoImpl();
-		this.processorDao = new NodeProcessorConfigDaoImpl();
+		FieldScanDaoFactory daoFactory = FieldScanDaoFactory.getInstance();
+		this.configDao = daoFactory.getFieldScanConfigDao();
+		this.statsDao = daoFactory.getFieldScanStatisticsDao();
+		this.fileDao = daoFactory.getFileNodeDao();
+		this.dirDao = daoFactory.getDirNodeDao();
+		this.processorDao = daoFactory.getNodeProcessorConfigDao();
 
+		return true;
 	}
 
 
@@ -124,6 +132,7 @@ public class FieldScan {
 	 *   throws a subclass of FieldScanException.
 	 */
 	public FieldScanStatistics doScan(String path) throws FieldScanException {
+		FieldScanStatistics stats = new FieldScanStatistics();
 		// Make sure the path is valid before we go any further.
 		if (path == null || path.trim().equals("")) {
 			throw new RootPathInvalid(path);
@@ -165,5 +174,6 @@ public class FieldScan {
 		}
 
 		// All Done.
+		return stats;
 	}
 }

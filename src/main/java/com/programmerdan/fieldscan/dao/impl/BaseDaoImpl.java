@@ -3,9 +3,12 @@ package com.programmerdan.fieldscan.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
-import javax.persistence.CriteriaQuery;
+
+import javax.persistence.criteria.CriteriaQuery;
 
 import java.util.List;
+
+import java.lang.reflect.ParameterizedType;
 
 import com.programmerdan.fieldscan.dao.BaseDao;
 import com.programmerdan.fieldscan.dao.NoTransactionAvailableException;
@@ -130,7 +133,7 @@ public abstract class BaseDaoImpl<T,K> implements BaseDao<T,K> {
 		try {
 			result = em.find(this.entityType, key);
 		} catch (PersistenceException pe) {
-			baseLog.error(pe);
+			baseLog.error("Couldn't find Entity", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -156,7 +159,7 @@ public abstract class BaseDaoImpl<T,K> implements BaseDao<T,K> {
 			}
 			em.flush();
 		} catch (PersistenceException pe) {
-			baseLog.error(pe);
+			baseLog.error("Couldn't save entity", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -181,7 +184,7 @@ public abstract class BaseDaoImpl<T,K> implements BaseDao<T,K> {
 			query.from(entityType);
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
-			baseLog.error(pe);
+			baseLog.error("Couldn't find all entities!", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}
@@ -203,11 +206,11 @@ public abstract class BaseDaoImpl<T,K> implements BaseDao<T,K> {
 		try {
 			em.remove(obj);
 		} catch (IllegalArgumentException iae) {
-			baseLog.warn(iae);
+			baseLog.warn("Object not managed, can't delete", iae);
 			endTransaction(xact, true);
 			return false;
 		} catch (PersistenceException pe) {
-			baseLog.error(pe);
+			baseLog.error("Couldn't delete entity", pe);
 			endTransaction(xact, true);
 			throw new FieldScanDaoException(pe);
 		}

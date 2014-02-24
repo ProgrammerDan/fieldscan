@@ -1,5 +1,7 @@
 package com.programmerdan.fieldscan.dao;
 
+import com.programmerdan.fieldscan.model.FieldScanConfig;
+
 /**
  * FieldScanConfig DAO, which adds support for find by name.
  *

@@ -9,6 +9,8 @@ import javax.persistence.Column;
 
 import java.sql.Date;
 
+import java.io.Serializable;
+
 /**
  * Basic statistics bean for executions of {@link FieldScan#doScan}
  * 
@@ -88,7 +90,7 @@ public class FieldScanStatistics implements Serializable {
 		this.filesProcessed = filesProcessed;
 		this.totalFileProcessingTime = totalFileProcessingTime;
 		this.dirsProcessed = dirsProcessed;
-		this.totalDirProcessingTim = totalDirProcessingTime;
+		this.totalDirProcessingTime = totalDirProcessingTime;
 		this.countFileNodesAdded = countFileNodesAdded;
 		this.countDirNodesAdded = countDirNodesAdded;
 		this.countFileNodesGone = countFileNodesGone;

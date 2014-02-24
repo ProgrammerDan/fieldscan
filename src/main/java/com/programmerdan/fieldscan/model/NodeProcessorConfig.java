@@ -1,5 +1,7 @@
 package com.programmerdan.fieldscan.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -9,9 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
-
-import com.programmerdan.fieldscan.model.NodeProcessorConfig;
-import com.programmerdan.fieldscan.model.FieldCanConfig;
 
 /**
  * Configuration bean for a node processor.
@@ -108,7 +107,7 @@ public class NodeProcessorConfig implements Serializable{
 	}
 
 	public FieldScanConfig getBaseConfig() {
-		return this.baseConfig();
+		return this.baseConfig;
 	}
 
 	public void setBaseConfig(FieldScanConfig baseConfig) {

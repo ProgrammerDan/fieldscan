@@ -82,3 +82,12 @@ within this frame, but it'll work out and in the meantime I've got a great
 framework for cataloging a filesystem.
 
 Expect more details as I continue.
+
+Build
+=====
+
+I use jpa-modelgen, so be sure to use "clean" in your build directive:
+
+mvn clean package
+
+etc.

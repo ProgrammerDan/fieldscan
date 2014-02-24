@@ -2,6 +2,8 @@ package com.programmerdan.fieldscan.model;
 
 import java.util.List;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -13,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 
-import com.programmerdan.fieldscan.model.NodeProcessorConfig;
 
 /**
  * Configuration bean for configuring against a database config.
@@ -55,7 +56,7 @@ public class FieldScanConfig implements Serializable{
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="root_processor_id", table="processor_config", 
-			referenceColumnName="id", nullable=false)
+			referencedColumnName="id", nullable=false)
 	private NodeProcessorConfig rootProcessor;
 
 	@OneToMany(fetch=FetchType.LAZY)

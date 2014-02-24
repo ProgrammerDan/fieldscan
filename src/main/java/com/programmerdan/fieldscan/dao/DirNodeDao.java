@@ -3,8 +3,8 @@ package com.programmerdan.fieldscan.dao;
 import com.programmerdan.fieldscan.model.FileNode;
 import com.programmerdan.fieldscan.model.DirNode;
 
-import java.util.Link;
-import java.nio.Path;
+import java.util.List;
+import java.nio.file.Path;
 
 /**
  * DirNode DAO, which adds support for find by path.
@@ -17,6 +17,7 @@ import java.nio.Path;
 public interface DirNodeDao implements BaseDao<DirNode,Long>{
 	
 	public List<DirNode> findAllChildren(DirNode dirNode);
+	public DirNode findRootDirByDirectoryName(String directoryName);
 	public DirNode findFirstByPath(Path path);
 }
 

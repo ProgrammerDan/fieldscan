@@ -17,5 +17,7 @@ public interface FileNodeDao implements BaseDao<FileNode,Long>{
 	
 	public List<FileNode> findAllBySimilarity(FileNode similar);
 	public List<FileNode> findAllByDirNode(DirNode dirNode);
+	public List<FileNode> findAllByDirNodeAndFileName(String name,
+			DirNode dirNode);
 }
 

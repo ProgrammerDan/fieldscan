@@ -1,12 +1,15 @@
 package com.programmerdan.fieldscan.dao.impl;
 
+import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.FileNodeDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.FileNode;
-import com.programmerdan.fieldscan.model.FieldScanConfig;
+import com.programmerdan.fieldscan.model.DirNode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -57,7 +60,7 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 			Metamodel mm = em.getMetamodel();
 			EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
-			CriteriaQuery<T> query = cb.createQuery(FileNode.class);
+			CriteriaQuery<FileNode> query = cb.createQuery(FileNode.class);
 			Root<FileNode> fsc = query.from(FileNode.class);
 			query.where(cb.equal(fsc.get(FileNode_.dirNode), dirNode));
 
@@ -87,7 +90,7 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 			Metamodel mm = em.getMetamodel();
 			EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
-			CriteriaQuery<T> query = cb.createQuery(FileNode.class);
+			CriteriaQuery<FileNode> query = cb.createQuery(FileNode.class);
 			Root<FileNode> fsc = query.from(FileNode.class);
 			query.where(cb.equal(fsc.get(FileNode_.fullHash),
 								 fileNode.getFullHash())
@@ -103,6 +106,40 @@ public class FileNodeDaoImpl extends BaseDaoImpl<FileNode, Long>
 									fileNode.getId())
 						)
 					);
+			found = em.createQuery(query).getResultList();
+		} catch (PersistenceException pe) {
+			log.error(pe);
+			endTransaction(xact, true);
+			throw new FieldScanDaoException(pe);
+		}
+		endTransaction(xact);
+		return found;
+	}
+
+	/**
+	 * This method finds all files based on a directory node and a file name.
+	 *
+	 * @param dirNode the DirNode that's parent to this file
+	 * @param name the file name
+	 * @return the FileNode that matches given conditions.
+	 */
+	public List<FileNode> findAllByDirNodeAndFileName(String name, 
+			DirNode dirNode) {
+		EntityManager em = getManager();
+		EntityTransaction xact = startTransaction(em);
+		List<FileNode> found = null;
+		try {
+			Metamodel mm = em.getMetamodel();
+			EntityType<FileNode> FileNode_ = mm.entity(FileNode.class);
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<FileNode> query = cb.createQuery(FileNode.class);
+			Root<FileNode> fsc = query.from(FileNode.class);
+			query.where(
+					cb.and(
+						cb.equal(fsc.get(FileNode_.dirNode), dirNode),
+						cb.equal(fsc.get(FileNode_.fileName), name)
+					)
+				);
 			found = em.createQuery(query).getResultList();
 		} catch (PersistenceException pe) {
 			log.error(pe);

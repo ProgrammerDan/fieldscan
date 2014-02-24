@@ -1,5 +1,6 @@
 package com.programmerdan.fieldscan.dao.impl;
 
+import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.NodeProcessorConfigDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.NodeProcessorConfig;
@@ -53,7 +54,8 @@ public class NodeProcessorConfigDaoImpl extends BaseDaoImpl<NodeProcessorConfig,
 			EntityType<NodeProcessorConfig> NodeProcessorConfig_ = mm.entity(
 					NodeProcessorConfig.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
-			CriteriaQuery<T> query = cb.createQuery(NodeProcessorConfig.class);
+			CriteriaQuery<NodeProcessorConfig> query =
+					cb.createQuery(NodeProcessorConfig.class);
 			Root<NodeProcessorConfig> fsc = query.from(NodeProcessorConfig.class);
 			query.where(cb.equals(fsc.get(NodeProcessorConfig_.baseConfig), config));
 

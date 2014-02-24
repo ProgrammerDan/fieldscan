@@ -1,5 +1,6 @@
 package com.programmerdan.fieldscan.dao.impl;
 
+import com.programmerdan.fieldscan.dao.FieldScanDaoException;
 import com.programmerdan.fieldscan.dao.FieldScanConfigDao;
 import com.programmerdan.fieldscan.dao.impl.BaseDaoImpl;
 import com.programmerdan.fieldscan.model.FieldScanConfig;
@@ -59,7 +60,8 @@ public class FieldScanConfigDaoImpl extends BaseDaoImpl<FieldScanConfig, Long>
 			EntityType<FieldScanConfig> FieldScanConfig_ = mm.entity(
 					FieldScanConfig.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
-			CriteriaQuery<T> query = cb.createQuery(FieldScanConfig.class);
+			CriteriaQuery<FieldScanConfig> query =
+					cb.createQuery(FieldScanConfig.class);
 			Root<FieldScanConfig> fsc = query.from(FieldScanConfig.class);
 			query.where(cb.equals(fsc.get(FieldScanConfig_.configName), name));
 

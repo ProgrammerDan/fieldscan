@@ -11,10 +11,10 @@ import java.nio.file.Path;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT February 20, 2014
  *   Inclusion of find by path
  */
-public interface DirNodeDao implements BaseDao<DirNode,Long>{
+public interface DirNodeDao extends BaseDao<DirNode,Long>{
 	
 	public List<DirNode> findAllChildren(DirNode dirNode);
 	public DirNode findRootDirByDirectoryName(String directoryName);

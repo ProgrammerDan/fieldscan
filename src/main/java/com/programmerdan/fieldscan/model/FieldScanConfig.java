@@ -1,6 +1,6 @@
 package com.programmerdan.fieldscan.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -34,7 +34,7 @@ public class FieldScanConfig implements Serializable{
 	 * Internal serial ID to allow other methods of storage besides
 	 * JDBC.
 	 */
-	private static final long serialVersionUID = 71375247004;
+	private static final long serialVersionUID = 71375247004L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -60,7 +60,7 @@ public class FieldScanConfig implements Serializable{
 
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(referencedColumnName="base_config_id", table="processor_config")
-	private Set<NodeProcessorConfig> registeredProcessors;
+	private List<NodeProcessorConfig> registeredProcessors;
 
 	public FieldScanConfig() {
 		id = null;
@@ -73,7 +73,7 @@ public class FieldScanConfig implements Serializable{
 
 	public FieldScanConfig(Long id, String configName, String description,
 			Boolean isParallelDeduplication, NodeProcessorConfig rootProcessor,
-			Set<NodeProcessorConfig> registeredProcessors) {
+			List<NodeProcessorConfig> registeredProcessors) {
 		this.id = id;
 		this.configName = configName;
 		this.description = description;
@@ -122,12 +122,12 @@ public class FieldScanConfig implements Serializable{
 		this.rootProcessor = rootProcessor;
 	}
 
-	public Set<NodeProcessorConfig> getRegisteredProcessors() {
+	public List<NodeProcessorConfig> getRegisteredProcessors() {
 		return registeredProcessors;
 	}
 
 	public void setRegisteredProcessor(
-			Set<NodeProcessorConfig registeredProcessors) {
+			List<NodeProcessorConfig> registeredProcessors) {
 		this.registeredProcessors = registeredProcessors;
 	}
 }

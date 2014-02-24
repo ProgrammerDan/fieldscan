@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT Febraury 20, 2014
  *   Basic CRUD and find implementation.
  */
 public interface BaseDao<T,K> {

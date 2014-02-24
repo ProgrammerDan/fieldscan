@@ -11,7 +11,7 @@ package com.programmerdan.fieldscan;
 public class FieldScanException extends Exception {
 
 	public static final String DEFAULT_EXCEPTION = 
-			"An error occured during scanning. View stack for details."
+			"An error occured during scanning. View stack for details.";
 
 	/**
 	 * Basic constructor, uses {@link #DEFAULT_EXCEPTION} as message.

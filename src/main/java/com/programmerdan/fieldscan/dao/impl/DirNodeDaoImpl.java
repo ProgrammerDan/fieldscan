@@ -34,7 +34,7 @@ import javax.persistence.NonUniqueResultException;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT February 20, 2014
  *   Basic implementation of Dao using persistence Apis.
  */
 public class DirNodeDaoImpl extends BaseDaoImpl<DirNode, Long>

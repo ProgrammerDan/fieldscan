@@ -25,7 +25,7 @@ import javax.persistence.PersistenceException;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT Febraury 20, 2014
  *   Basic implementation of Dao using persistence Apis.
  */
 public class NodeProcessorConfigDaoImpl extends BaseDaoImpl<NodeProcessorConfig, Long>

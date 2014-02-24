@@ -5,10 +5,10 @@ package com.programmerdan.fieldscan.dao;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT February 20, 2014
  *   Inclusion of find by name.
  */
-public interface FieldScanConfigDao implements BaseDao<FieldScanConfig,Long>{
+public interface FieldScanConfigDao extends BaseDao<FieldScanConfig,Long>{
 	
 	public FieldScanConfig findByName(String name);
 }

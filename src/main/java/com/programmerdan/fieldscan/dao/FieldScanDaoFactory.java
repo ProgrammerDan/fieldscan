@@ -36,6 +36,7 @@ public class FieldScanDaoFactory {
 	private NodeProcessorConfigDao processorDao;
 	private FileNodeDao fileDao;
 	private DirNodeDao dirDao;
+	private FieldScanStatisticsDao statsDao;
 	
 	private static FieldScanDaoFactory instance = null;
 
@@ -47,6 +48,7 @@ public class FieldScanDaoFactory {
 		processorDao = null;
 		fileDao = null;
 		dirDao = null;
+		statsDao = null;
 	}
 
 	/**
@@ -81,6 +83,8 @@ public class FieldScanDaoFactory {
 			return getFileNodeDao();
 		} else if (daoType.equals(DirNode.class) ) {
 			return getDirNodeDao();
+		} else if (daoType.equals(FieldScanStatistics.class) ) {
+			return getFieldScanStatisticsDao();
 		} else {
 			throw new DaoNotAvailableException(daoType);
 		}
@@ -132,5 +136,17 @@ public class FieldScanDaoFactory {
 			dirDao = new DirNodeDaoImpl();
 		}
 		return dirDao;
+	}
+
+	/**
+	 * Gets the FieldScanStatisticsDao using the standard implementation.
+	 *
+	 * @return the {@link FieldScanStatisticsDao} instance.
+	 */
+	public FieldScanStatisticsDao getFieldScanStatisticsDao() {
+		if (statsDao == null) {
+			statsDao = new FieldScanStatisticsDaoImpl();
+		}
+		return statsDao;
 	}
 }

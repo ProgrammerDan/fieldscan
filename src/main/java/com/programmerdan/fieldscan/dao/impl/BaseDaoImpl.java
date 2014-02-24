@@ -20,10 +20,10 @@ import com.slf4j.Logger;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT February 20, 2014
  *   Basic implementation of Dao using persistence Apis.
  */
-public abstract BaseDaoImpl<T,K> implements BaseDao<T,K> {
+public abstract class BaseDaoImpl<T,K> implements BaseDao<T,K> {
 	private final static Logger baseLog = LoggerFactory.getLogger(
 			BaseDaoImpl.class);
 
@@ -87,7 +87,7 @@ public abstract BaseDaoImpl<T,K> implements BaseDao<T,K> {
 		if (xact == null) {
 			throw new NoTransactionAvailableException();
 		}
-		xact.begin;
+		xact.begin();
 		return xact;
 	}
 

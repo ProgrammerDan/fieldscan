@@ -9,7 +9,7 @@ package com.programmerdan.fieldscan.dao;
  * @version 0.1-SNAPSHOT February 23, 2014
  *   First implementation.
  */
-public class NoEntityManagerAssingedException extends FieldScanDaoException {
+public class NoEntityManagerAssignedException extends FieldScanDaoException {
 
 	/**
 	 * Standard message for No Entity Manager assigned.

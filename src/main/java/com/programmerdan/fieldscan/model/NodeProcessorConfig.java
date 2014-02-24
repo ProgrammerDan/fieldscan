@@ -1,7 +1,5 @@
 package com.programmerdan.fieldscan.model;
 
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -9,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 
@@ -35,7 +32,7 @@ public class NodeProcessorConfig implements Serializable{
 	 * Internal serial ID to allow other methods of storage besides
 	 * JDBC.
 	 */
-	private static final long serialVersionUID = 71375247005;
+	private static final long serialVersionUID = 71375247005L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -56,8 +53,8 @@ public class NodeProcessorConfig implements Serializable{
 	private String params;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="base_config_id", table="base_config", referencedColumnName="id",
-			nullable=false);
+	@JoinColumn(name="base_config_id", table="base_config", 
+			referencedColumnName="id", nullable=false)
 	private FieldScanConfig baseConfig;
 
 	public NodeProcessorConfig() {

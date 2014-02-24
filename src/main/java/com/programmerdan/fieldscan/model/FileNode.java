@@ -28,7 +28,7 @@ public class FileNode implements BaseNode, Serializable {
 	 * Internal serial ID to allow other methods of storage besides
 	 * JDBC.
 	 */
-	private static final long serialVersionUID = 71375247001;
+	private static final long serialVersionUID = 71375247001L;
 
 	@Id
 	@GeneratedValue(strategy=SEQUENCE)
@@ -52,7 +52,7 @@ public class FileNode implements BaseNode, Serializable {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="dir_node_id", table="dir_node", referencedColumnName="id",
-			nullable=false);
+			nullable=false)
 	private DirNode dirNode;
 
 	public FileNode() {

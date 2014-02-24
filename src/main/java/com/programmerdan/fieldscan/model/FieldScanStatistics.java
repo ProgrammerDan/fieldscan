@@ -25,7 +25,7 @@ public class FieldScanStatistics implements Serializable {
 	 * Internal serial ID to allow other methods of storage besides
 	 * JDBC.
 	 */
-	private static final long serialVersionUID = 71375247003;
+	private static final long serialVersionUID = 71375247003L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -131,7 +131,8 @@ public class FieldScanStatistics implements Serializable {
 		if (this.filesProcessed != null) {
 			this.filesProcessed++;
 		} else { 
-			this.filesProcesesd = 0L;
+			this.filesProcessed = 0L;
+		}
 		return this.filesProcessed;
 	}
 

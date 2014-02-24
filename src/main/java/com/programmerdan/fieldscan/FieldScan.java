@@ -140,9 +140,10 @@ public class FieldScan {
 
 		// Using concurrent linked queues to allow more complex, multi-threaded
 		// implementations in the future.
-		ConcurrentLinkedQueue processorQueue<NodeProcessor> =
-				new ConcurrentLinkedQueue();
-		ConcurrentLinkedDeque fileStack<Path> = new ConcurrentLinkedDeque();
+		ConcurrentLinkedQueue<NodeProcessor> processorQueue =
+				new ConcurrentLinkedQueue<NodeProcessor>();
+		ConcurrentLinkedDeque<Path> fileStack =
+				new ConcurrentLinkedDeque<Path>();
 
 		if (!fileStack.offerFirst(firstPath)) {
 			throw new FieldScanException("Exceeded path stack depth.");

@@ -70,11 +70,11 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 			}
 
 			String autocommit = props.getProperty(Environment.AUTOCOMMIT);
-			if ((autocommit != null) && autocommit.trim().length() > 0)) {
+			if ((autocommit != null) && autocommit.trim().length() > 0) {
 				dbcpProperties.put("defaultAutoCommit", autocommit);
 			} else {
 				dbcpProperties.put("defaultAutoCommit",
-						String.valueOf(Boolean.FALSE);
+						String.valueOf(Boolean.FALSE));
 			}
 
 			String poolSize = props.getProperty(Environment.POOL_SIZE);
@@ -208,7 +208,7 @@ public class DBCPConnectionProvider implements ConnectionProvider {
 		if (log.isDebugEnabled()) {
 			log.debug("active: " + ds.getNumActive() + " (max: " +
 					ds.getMaxActive() + ") idle: " + ds.getNumIdle() +
-					" (max: " + ds.getMaxIdle() + ")")';
+					" (max: " + ds.getMaxIdle() + ")");
 		}
 	}
 

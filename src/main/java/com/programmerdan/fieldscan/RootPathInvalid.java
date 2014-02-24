@@ -6,10 +6,10 @@ package com.programmerdan.fieldscan;
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
- * @version 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT February 20, 2014
  *   Initial version of this simple exception.
  */
-public RootPathInvalid extends FieldScanException {
+public class RootPathInvalid extends FieldScanException {
 	private String invalidPath;
 
 	/**

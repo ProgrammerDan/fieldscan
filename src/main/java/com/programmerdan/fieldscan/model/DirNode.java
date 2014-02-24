@@ -1,6 +1,6 @@
 package com.programmerdan.fieldscan.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -31,7 +31,7 @@ public class DirNode implements BaseNode, Serializable{
 	 * Internal serial ID to allow other methods of storage besides
 	 * JDBC.
 	 */
-	private static final long serialVersionUID = 71375247002;
+	private static final long serialVersionUID = 71375247002L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -43,7 +43,7 @@ public class DirNode implements BaseNode, Serializable{
 
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(referencedColumnName="dir_node_id", table="file_node")
-	private Set<FileNode> fileNodes;
+	private List<FileNode> fileNodes;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(referencedColumnName="id", table="dir_node", name="parent_dir", nullable=true)
@@ -56,7 +56,7 @@ public class DirNode implements BaseNode, Serializable{
 		this.parentDir = null;
 	}
 
-	public DirNode(Long id, String directoryName, Set<FileNode> fileNodes,
+	public DirNode(Long id, String directoryName, List<FileNode> fileNodes,
 			DirNode parentDir) {
 		this.id = id;
 		this.directoryName = directoryName;
@@ -82,11 +82,11 @@ public class DirNode implements BaseNode, Serializable{
 	}
 
 	
-	public Set<FileNode> getFileNodes() {
+	public List<FileNode> getFileNodes() {
 		return fileNodes;
 	}
 
-	public void setFileNodes(Set<FileNode> fileNodes) {
+	public void setFileNodes(List<FileNode> fileNodes) {
 		this.fileNodes = fileNodes;
 	}
 

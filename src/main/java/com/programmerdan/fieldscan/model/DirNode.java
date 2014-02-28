@@ -52,19 +52,25 @@ public class DirNode implements BaseNode, Serializable{
 	@JoinColumn(referencedColumnName="id", table="dir_node", name="parent_dir", nullable=true)
 	private DirNode parentDir;
 
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(referencedColumnName="parent_dir", table="dir_node")
+	private List<DirNode> childDirs;
+
 	public DirNode() {
 		this.id = null;
 		this.directoryName = null;
 		this.fileNodes = null;
 		this.parentDir = null;
+		this.childDirs = null;
 	}
 
 	public DirNode(Long id, String directoryName, List<FileNode> fileNodes,
-			DirNode parentDir) {
+			DirNode parentDir, List<DirNode> childDirs) {
 		this.id = id;
 		this.directoryName = directoryName;
 		this.fileNodes = fileNodes;
 		this.parentDir = parentDir;
+		this.childDirs = childDirs;
 	}
 
 	public Long getId() {
@@ -84,7 +90,6 @@ public class DirNode implements BaseNode, Serializable{
 		this.directoryName = directoryName;
 	}
 
-	
 	public List<FileNode> getFileNodes() {
 		return fileNodes;
 	}
@@ -99,5 +104,13 @@ public class DirNode implements BaseNode, Serializable{
 
 	public void setParentDir(DirNode parentDir) {
 		this.parentDir = parentDir;
+	}
+
+	public List<DirNode> getChildDirs() {
+		return childDirs;
+	}
+
+	public void setChildDirs(List<DirNode> childDirs) {
+		this.childDirs = childDirs;
 	}
 }

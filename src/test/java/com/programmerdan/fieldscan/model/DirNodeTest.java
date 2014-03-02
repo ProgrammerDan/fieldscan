@@ -14,6 +14,10 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DirNodeTest extends BaseTest {
 
+	/**
+	 * Basic DirNode test, validating that all relationships are handled correctly and persistence is functioning.
+	 * TODO: this one test has many tests. Split them out.
+	 */
 	@Test
 	public void dirNodePersistenceTest() {
 		DirNode dn1 = new DirNode(1L,"root1", null, null, null);
@@ -43,5 +47,18 @@ public class DirNodeTest extends BaseTest {
 		assertNotNull("CC File list null!", dn3P.getFileNodes());
 		assertEquals("Wrong number of files in CC FileList", 1, dn3P.getFileNodes().getSize());
 		assertTrue("FileNode missing!", dn3P.getFileNodes().contains(fnP));
+	}
+
+	/**
+	 * Negative test for failure on no directoryname.
+	 * TODO: be more specific on exception.
+	 */
+	@Test(expects=PersistenceException)
+	public void dirNodeFailsOnPersistWithoutDirectoryName() {
+		DirNode dn = new DirNode();
+		em().persist(dn);
+		dn.setDirectoryName(null);
+		dn.setParentDir(null); //allowed
+		em().flush();
 	}
 }

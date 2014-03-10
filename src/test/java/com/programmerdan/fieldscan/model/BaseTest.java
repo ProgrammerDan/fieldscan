@@ -2,38 +2,52 @@ package com.programmerdan.fieldscan.model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.EntityManagerFactory;
+
+import org.junit.Before;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
+
 
 /**
  * Helper root class for tests to handle setting up entity objects and persistence context.
  */
 public class BaseTest {
 
-	private static EntityManagerFactory emf = null;
+	static EntityManagerFactory emf = null;
 	private EntityManager em=null;
-	private EntityTransaction tx;
+	private EntityTransaction tx=null;
 
 	protected EntityManager em() {
-		return BaseTest.em;
+		return em;
 	}
 
 	@Before
 	public void setup() {
-		em = BaseTest.emf.getManager();
+		em = BaseTest.emf.createEntityManager();
 		tx = em.getTransaction();
 		tx.begin();
 	}
 
 	@After
 	public void teardown() {
-		tx.close();
-		em.close()
+		tx.commit();
+		em.close();
 	}
 
 	@BeforeClass
-	public static void() {
+	public static void setupClass() {
 		if (emf != null)
 			emf.close();
 
-		emf = Persistence.getEntityManagerFactory("com.programmerdan.fieldscan.test");
+		emf = Persistence.createEntityManagerFactory("com.programmerdan.fieldscan.test");
+	}
+
+	@AfterClass
+	public static void teardownClass(){
+		if (emf != null)
+			emf.close();
 	}
 }

@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import javax.persistence.PersistenceException;
 /**
  * Tests persistence and retrieval of a FileNode.
  *
@@ -39,9 +40,9 @@ public class FileNodeTest extends BaseTest {
 	/**
 	 * Testing for expected error state of no DirNode. TODO: narrow exception expectation.
 	 */
-	@Test(expects=PersistenceException)
-	public void fileNodeFailsOnPersistWithoutDirNode {
-		FileNode file2 = new FileNode()
+	@Test(expected=PersistenceException.class)
+	public void fileNodeFailsOnPersistWithoutDirNode() {
+		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName("file2");
 		file2.setOneKbHash(new Byte[]{2});
@@ -50,18 +51,18 @@ public class FileNodeTest extends BaseTest {
 		file2.setIsGone(true);
 		file2.setDirNode(null);
 
-		em.flush();
+		em().flush();
 	}
 
 	/**
 	 * Testing for expected error state of no FileName. TODO: narrow exception expectation.
 	 */
-	@Test(expects=PersistenceException)
-	public void fileNodeFailsOnPersistWithoutFileName {
+	@Test(expected=PersistenceException.class)
+	public void fileNodeFailsOnPersistWithoutFileName() {
 		DirNode dn = new DirNode(1L,"root3", null, null, null);
 		em().persist(dn);
 
-		FileNode file2 = new FileNode()
+		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName(null);
 		file2.setOneKbHash(new Byte[]{2});
@@ -70,18 +71,18 @@ public class FileNodeTest extends BaseTest {
 		file2.setIsGone(true);
 		file2.setDirNode(dn);
 
-		em.flush();
+		em().flush();
 	}
 
 	/**
 	 * Testing for expected error state of no OneKbHash. TODO: narrow exception expectation.
 	 */
-	@Test(expects=PersistenceException)
-	public void fileNodeFailsOnPersistWithoutOneKbHash {
+	@Test(expected=PersistenceException.class)
+	public void fileNodeFailsOnPersistWithoutOneKbHash() {
 		DirNode dn = new DirNode(1L,"root4", null, null, null);
 		em().persist(dn);
 
-		FileNode file2 = new FileNode()
+		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName("file3");
 		file2.setOneKbHash(null);
@@ -90,18 +91,18 @@ public class FileNodeTest extends BaseTest {
 		file2.setIsGone(true);
 		file2.setDirNode(dn);
 
-		em.flush();
+		em().flush();
 	}
 
 	/**
 	 * Testing for expected error state of no FullHash. TODO: narrow exception expectation.
 	 */
-	@Test(expects=PersistenceException)
-	public void fileNodeFailsOnPersistWithoutFullHash {
+	@Test(expected=PersistenceException.class)
+	public void fileNodeFailsOnPersistWithoutFullHash() {
 		DirNode dn = new DirNode(1L,"root5", null, null, null);
 		em().persist(dn);
 
-		FileNode file2 = new FileNode()
+		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName("file4");
 		file2.setOneKbHash(new Byte[]{4});
@@ -110,18 +111,18 @@ public class FileNodeTest extends BaseTest {
 		file2.setIsGone(true);
 		file2.setDirNode(dn);
 
-		em.flush();
+		em().flush();
 	}
 
 	/**
 	 * Testing for expected error state of no FileSize. TODO: narrow exception expectation.
 	 */
-	@Test(expects=PersistenceException)
-	public void fileNodeFailsOnPersistWithoutFileSize {
+	@Test(expected=PersistenceException.class)
+	public void fileNodeFailsOnPersistWithoutFileSize() {
 		DirNode dn = new DirNode(1L,"root6", null, null, null);
 		em().persist(dn);
 
-		FileNode file2 = new FileNode()
+		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName("file5");
 		file2.setOneKbHash(new Byte[]{5});
@@ -130,18 +131,18 @@ public class FileNodeTest extends BaseTest {
 		file2.setIsGone(true);
 		file2.setDirNode(dn);
 
-		em.flush();
+		em().flush();
 	}
 
 	/**
 	 * Testing for default value propagation for isGone. TODO: narrow exception expectation.
 	 */
 	@Test
-	public void fileNodeUsesDefaultWitgoutIsGone {
+	public void fileNodeUsesDefaultWitgoutIsGone() {
 		DirNode dn = new DirNode(1L,"root7", null, null, null);
 		em().persist(dn);
 
-		FileNode file2 = new FileNode()
+		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName("file6");
 		file2.setOneKbHash(new Byte[]{5});
@@ -150,6 +151,6 @@ public class FileNodeTest extends BaseTest {
 		file2.setIsGone(null);
 		file2.setDirNode(dn);
 
-		em.flush();
+		em().flush();
 	}
 }

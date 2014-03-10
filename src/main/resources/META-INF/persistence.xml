@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="com.programmerdan.fieldscan.jpa">
+		<description>
+			Persistence unit for FieldScan project, utilizing the latest JPA version.
+		</description>
+	
+		<class>com.programmerdan.fieldscan.model.FileNode</class>
+		<class>com.programmerdan.fieldscan.model.DirNode</class>
+		<class>com.programmerdan.fieldscan.model.FieldScanConfig</class>
+		<class>com.programmerdan.fieldscan.model.NodeProcessorConfig</class>
+		<class>com.programmerdan.fieldscan.model.FieldScanStatistics</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/fieldscan"/>
+			<property name="javax.persistence.jdbc.user" value="fieldscan"/>
+			<property name="javax.persistence.jdbc.password" value="u98Lm2zAb"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+			<property name="hibernate.default_schema" value="fieldscan"/>
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.internal.NoCacheProvider"/>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.hbm2ddl.auto" value="validate"/>
+			<property name="hibernate.connection.provider_class" value="com.programmerdan.db.DBCPConnectionProvider"/>
+			<property name="hibernate.dbcp.initialSize" value="2"/>
+			<property name="hibernate.dbcp.maxActive" value="20"/>
+			<property name="hibernate.dbcp.maxIdle" value="10"/>
+			<property name="hibernate.dbcp.minIdle" value="0"/>
+			<property name="hibernate.dbcp.validationQuery" value="SELECT 1"/>
+			<property name="hibernate.dbcp.testOnBorrow" value="true"/>
+		</properties>
+	</persistence-unit>
+</persistence>

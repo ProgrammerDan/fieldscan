@@ -1,8 +1,14 @@
 package com.programmerdan.fieldscan.model;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import javax.persistence.PersistenceException;
 
 /**
  * Tests persistence and retrieval of a DirNode.
@@ -12,6 +18,7 @@ import static org.junit.Assert.assertNotNull;
  * @version 0.1-SNAPSHOT
  *   Initial release.
  */
+@RunWith(JUnit4.class)
 public class DirNodeTest extends BaseTest {
 
 	/**
@@ -38,14 +45,14 @@ public class DirNodeTest extends BaseTest {
 
 		assertEquals("Root dir directoryname mangled", dn1.getDirectoryName(), dn1P.getDirectoryName());
 		assertNotNull("File list null!", dn1P.getFileNodes());
-		assertEquals("Unexpected files in FileList", 0, dn1P.getFileNodes().getSize());
+		assertEquals("Unexpected files in FileList", 0, dn1P.getFileNodes().size());
 		assertNull("Unexpected parent of root node.", dn1P.getParentDir());
 		assertNotNull("ChildDir list null!", dn1P.getChildDirs());
-		assertEquals("ChildDirs is too large!",1, dn1P.getChildDirs().getSize());
+		assertEquals("ChildDirs is too large!",1, dn1P.getChildDirs().size());
 		assertTrue("ChildDir missing!",dn1P.getChildDirs().contains(dn2P));
 		assertEquals("Wrong parent dir!", dn1P, dn2P.getParentDir());
 		assertNotNull("CC File list null!", dn3P.getFileNodes());
-		assertEquals("Wrong number of files in CC FileList", 1, dn3P.getFileNodes().getSize());
+		assertEquals("Wrong number of files in CC FileList", 1, dn3P.getFileNodes().size());
 		assertTrue("FileNode missing!", dn3P.getFileNodes().contains(fnP));
 	}
 
@@ -53,7 +60,7 @@ public class DirNodeTest extends BaseTest {
 	 * Negative test for failure on no directoryname.
 	 * TODO: be more specific on exception.
 	 */
-	@Test(expects=PersistenceException)
+	@Test(expected=PersistenceException.class)
 	public void dirNodeFailsOnPersistWithoutDirectoryName() {
 		DirNode dn = new DirNode();
 		em().persist(dn);

@@ -54,7 +54,7 @@ public class FileNode implements BaseNode, Serializable {
 	private Boolean isGone;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="dir_node_id", table="dir_node", referencedColumnName="id",
+	@JoinColumn(name="dir_node_id", referencedColumnName="id",
 			nullable=false)
 	private DirNode dirNode;
 

@@ -84,7 +84,9 @@ public class DBCPConnectionProvider implements ConnectionProvider, Stoppable,
 			String username = props.getProperty(Environment.USER);
 			String password = props.getProperty(Environment.PASS);
 			dbcpProperties.put("username", username);
-			dbcpProperties.put("password", password);
+			if (password != null) { //not every database requires this.
+				dbcpProperties.put("password", password);
+			}
 
 			String isolationLevel = props.getProperty(Environment.ISOLATION);
 			if ((isolationLevel != null) &&
@@ -243,10 +245,12 @@ public class DBCPConnectionProvider implements ConnectionProvider, Stoppable,
 	 * Internal method to show some basic pool statistics.
 	 */
 	protected void logStatistics() {
-		if (log.isDebugEnabled()) {
+		if (log.isDebugEnabled() && ds != null) {
 			log.debug("active: " + ds.getNumActive() + " (max: " +
 					ds.getMaxActive() + ") idle: " + ds.getNumIdle() +
 					" (max: " + ds.getMaxIdle() + ")");
+		} else if (log.isDebugEnabled() ) {
+			log.debug("nothing active");
 		}
 	}
 

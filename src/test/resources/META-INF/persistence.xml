@@ -29,7 +29,7 @@
 			<property name="hibernate.dbcp.maxActive" value="20"/>
 			<property name="hibernate.dbcp.maxIdle" value="10"/>
 			<property name="hibernate.dbcp.minIdle" value="0"/>
-			<property name="hibernate.dbcp.validationQuery" value="SELECT 1"/>
+			<property name="hibernate.dbcp.validationQuery" value="SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"/>
 			<property name="hibernate.dbcp.testOnBorrow" value="true"/>
 		</properties>
 	</persistence-unit>

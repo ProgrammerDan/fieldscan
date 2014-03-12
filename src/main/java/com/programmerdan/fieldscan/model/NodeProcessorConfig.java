@@ -52,7 +52,7 @@ public class NodeProcessorConfig implements Serializable{
 	private String params;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="base_config_id", table="base_config", 
+	@JoinColumn(name="base_config_id",
 			referencedColumnName="id", nullable=false)
 	private FieldScanConfig baseConfig;
 

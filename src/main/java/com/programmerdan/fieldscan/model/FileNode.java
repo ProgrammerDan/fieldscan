@@ -41,16 +41,16 @@ public class FileNode implements BaseNode, Serializable {
 	@Column(name="file_name", nullable=false)
 	private String fileName;
 
-	@Column(name="one_kb_hash", nullable=false, columnDefinition="one_kb_hash BYTEA NOT NULL")
+	@Column(name="one_kb_hash", nullable=false)//, columnDefinition="BYTEA")
 	private Byte[] oneKbHash;
 
-	@Column(name="full_hash", nullable=false, columnDefinition="full_hash BYTEA NOT NULL")
+	@Column(name="full_hash", nullable=false)//, columnDefinition="BYTEA")
 	private Byte[] fullHash;
 
 	@Column(name="file_size", nullable=false)
 	private Long fileSize;
 
-	@Column(name="is_gone", nullable=false, columnDefinition="is_gone BOOLEAN NOT NULL DEFAULT false")
+	@Column(name="is_gone", nullable=false, columnDefinition="BOOLEAN DEFAULT false")
 	private Boolean isGone;
 
 	@ManyToOne(fetch=FetchType.LAZY)

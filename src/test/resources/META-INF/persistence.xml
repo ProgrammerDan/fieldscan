@@ -20,7 +20,6 @@
 			<property name="javax.persistence.jdbc.user" value="sa"/>
 			<property name="javax.persistence.jdbc.password" value=""/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
-			<property name="hibernate.default_schema" value="fieldscan"/>
 			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.internal.NoCacheProvider"/>
 			<property name="hibernate.show_sql" value="true"/>
 			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>

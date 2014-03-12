@@ -35,10 +35,10 @@ public class FieldScanStatistics implements Serializable {
 	private Long id;
 
 	@Column(name="scan_begin", nullable=false, 
-			columnDefinition="scan_begin TIMESTAMP NOT NULL DEFAULT now()")
+			columnDefinition="TIMESTAMP DEFAULT now()")
 	private Date scanBegin;
 
-	@Column(name="scan_end", columnDefinition="scan_end TIMESTAMP")
+	@Column(name="scan_end", columnDefinition="TIMESTAMP")
 	private Date scanEnd;
 
 	@Column(name="files_processed", nullable=false)

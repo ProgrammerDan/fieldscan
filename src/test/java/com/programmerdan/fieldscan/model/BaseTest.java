@@ -33,21 +33,30 @@ public class BaseTest {
 
 	@After
 	public void teardown() {
-		tx.commit();
-		em.close();
+		if (tx != null) {
+			if (tx.getRollbackOnly()) {
+				tx.rollback();
+			} else {
+				tx.commit();
+			}
+		}
+		if (em != null) {
+			em.close();
+		}
 	}
 
 	@BeforeClass
 	public static void setupClass() {
-		if (emf != null)
-			emf.close();
+		/*if (emf != null)
+			emf.close();*/
 
-		emf = Persistence.createEntityManagerFactory("com.programmerdan.fieldscan.test");
+		if (emf == null)
+			emf = Persistence.createEntityManagerFactory("com.programmerdan.fieldscan.test");
 	}
 
-	@AfterClass
+	/*@AfterClass
 	public static void teardownClass(){
 		if (emf != null)
 			emf.close();
-	}
+	}*/
 }

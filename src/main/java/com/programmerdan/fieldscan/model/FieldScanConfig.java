@@ -55,12 +55,11 @@ public class FieldScanConfig implements Serializable{
 	private Boolean isParallelDeduplication;
 
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="root_processor_id", table="processor_config", 
+	@JoinColumn(name="root_processor_id", 
 			referencedColumnName="id", nullable=false)
 	private NodeProcessorConfig rootProcessor;
 
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(referencedColumnName="base_config_id", table="processor_config")
+	@OneToMany(mappedBy="baseConfig",fetch=FetchType.LAZY)
 	private List<NodeProcessorConfig> registeredProcessors;
 
 	public FieldScanConfig() {

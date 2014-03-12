@@ -44,14 +44,14 @@ public class DirNode implements BaseNode, Serializable{
 	@Column(name="directory_name", nullable=false)
 	private String directoryName;
 
-	@OneToMany(mappedBy="dir_node_id")
+	@OneToMany(mappedBy="dirNode", fetch=FetchType.EAGER)
 	private List<FileNode> fileNodes;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(referencedColumnName="id", table="dir_node", name="parent_dir", nullable=true)
 	private DirNode parentDir;
 
-	@OneToMany(mappedBy = "parent_dir")
+	@OneToMany(mappedBy = "parentDir", fetch=FetchType.LAZY)
 	private List<DirNode> childDirs;
 
 	public DirNode() {

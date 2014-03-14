@@ -17,8 +17,8 @@ public class FileNodeTest extends BaseTest {
 
 	@Test
 	public void fileNodePersistenceTest() {
-		DirNode dn = new DirNode(1L,"root1", null, null, null);
-		FileNode fn = new FileNode(1L, "file1", new Byte[]{1}, new Byte[]{2}, 100L, false, dn);
+		DirNode dn = new DirNode(null,"root1", null);
+		FileNode fn = new FileNode(null, "file1", new Byte[]{1}, new Byte[]{2}, 100L, false, dn);
 		em().persist(dn);
 		em().persist(fn);
 
@@ -41,7 +41,7 @@ public class FileNodeTest extends BaseTest {
 	 * Testing for expected error state of no DirNode. TODO: narrow exception expectation.
 	 */
 	@Test(expected=PersistenceException.class)
-	public void fileNodeFailsOnPersistWithoutDirNode() {
+	public void fileNodeFailsOnPersistWithoutDirNodeTest() {
 		FileNode file2 = new FileNode();
 		em().persist(file2);
 		file2.setFileName("file2");
@@ -58,8 +58,8 @@ public class FileNodeTest extends BaseTest {
 	 * Testing for expected error state of no FileName. TODO: narrow exception expectation.
 	 */
 	@Test(expected=PersistenceException.class)
-	public void fileNodeFailsOnPersistWithoutFileName() {
-		DirNode dn = new DirNode(1L,"root3", null, null, null);
+	public void fileNodeFailsOnPersistWithoutFileNameTest() {
+		DirNode dn = new DirNode(null,"root3", null);
 		em().persist(dn);
 
 		FileNode file2 = new FileNode();
@@ -78,8 +78,8 @@ public class FileNodeTest extends BaseTest {
 	 * Testing for expected error state of no OneKbHash. TODO: narrow exception expectation.
 	 */
 	@Test(expected=PersistenceException.class)
-	public void fileNodeFailsOnPersistWithoutOneKbHash() {
-		DirNode dn = new DirNode(1L,"root4", null, null, null);
+	public void fileNodeFailsOnPersistWithoutOneKbHashTest() {
+		DirNode dn = new DirNode(null,"root4", null);
 		em().persist(dn);
 
 		FileNode file2 = new FileNode();
@@ -98,8 +98,8 @@ public class FileNodeTest extends BaseTest {
 	 * Testing for expected error state of no FullHash. TODO: narrow exception expectation.
 	 */
 	@Test(expected=PersistenceException.class)
-	public void fileNodeFailsOnPersistWithoutFullHash() {
-		DirNode dn = new DirNode(1L,"root5", null, null, null);
+	public void fileNodeFailsOnPersistWithoutFullHashTest() {
+		DirNode dn = new DirNode(null,"root5", null);
 		em().persist(dn);
 
 		FileNode file2 = new FileNode();
@@ -118,8 +118,8 @@ public class FileNodeTest extends BaseTest {
 	 * Testing for expected error state of no FileSize. TODO: narrow exception expectation.
 	 */
 	@Test(expected=PersistenceException.class)
-	public void fileNodeFailsOnPersistWithoutFileSize() {
-		DirNode dn = new DirNode(1L,"root6", null, null, null);
+	public void fileNodeFailsOnPersistWithoutFileSizeTest() {
+		DirNode dn = new DirNode(null,"root6", null);
 		em().persist(dn);
 
 		FileNode file2 = new FileNode();
@@ -138,19 +138,23 @@ public class FileNodeTest extends BaseTest {
 	 * Testing for default value propagation for isGone. TODO: narrow exception expectation.
 	 */
 	@Test
-	public void fileNodeUsesDefaultWitgoutIsGone() {
-		DirNode dn = new DirNode(1L,"root7", null, null, null);
-		em().persist(dn);
+	public void fileNodeUsesDefaultWithoutIsGoneTest() {
+		DirNode dn = new DirNode(null,"root7", null);
 
 		FileNode file2 = new FileNode();
-		em().persist(file2);
 		file2.setFileName("file6");
 		file2.setOneKbHash(new Byte[]{5});
 		file2.setFullHash(new Byte[]{6});
 		file2.setFileSize(10L);
-		file2.setIsGone(null);
+		//not setting "IsGone";
 		file2.setDirNode(dn);
-
+		em().persist(dn);
+		em().persist(file2);
 		em().flush();
+
+		FileNode file3 = em().find(FileNode.class, file2.getId());
+
+		assertNotNull("IsGone somehow null!", file3.getIsGone());
+		assertFalse("IsGone not set to default!", file3.getIsGone());
 	}
 }

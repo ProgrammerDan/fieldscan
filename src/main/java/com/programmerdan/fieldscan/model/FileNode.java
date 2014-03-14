@@ -51,7 +51,7 @@ public class FileNode implements BaseNode, Serializable {
 	private Long fileSize;
 
 	@Column(name="is_gone", nullable=false, columnDefinition="BOOLEAN DEFAULT false")
-	private Boolean isGone;
+	private Boolean isGone = false;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="dir_node_id", referencedColumnName="id",
@@ -64,7 +64,7 @@ public class FileNode implements BaseNode, Serializable {
 		this.oneKbHash = null;
 		this.fullHash = null;
 		this.fileSize = null;
-		this.isGone = null;
+		this.isGone = false;
 		this.dirNode = null;
 	}
 

@@ -19,7 +19,6 @@ import javax.persistence.FetchType;
  * Basic directory node. Might hold more in here eventually but for now 
  * just a name.
  *
- * TODO: Comment appropriately
  *
  * @author Daniel Boston <programmerdan@gmail.com>
  * @since 0.1-SNAPSHOT
@@ -44,31 +43,20 @@ public class DirNode implements BaseNode, Serializable{
 	@Column(name="directory_name", nullable=false)
 	private String directoryName;
 
-	@OneToMany(mappedBy="dirNode", fetch=FetchType.EAGER)
-	private List<FileNode> fileNodes;
-
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(referencedColumnName="id", table="dir_node", name="parent_dir", nullable=true)
 	private DirNode parentDir;
 
-	@OneToMany(mappedBy = "parentDir", fetch=FetchType.LAZY)
-	private List<DirNode> childDirs;
-
 	public DirNode() {
 		this.id = null;
 		this.directoryName = null;
-		this.fileNodes = null;
 		this.parentDir = null;
-		this.childDirs = null;
 	}
 
-	public DirNode(Long id, String directoryName, List<FileNode> fileNodes,
-			DirNode parentDir, List<DirNode> childDirs) {
+	public DirNode(Long id, String directoryName, DirNode parentDir) {
 		this.id = id;
 		this.directoryName = directoryName;
-		this.fileNodes = fileNodes;
 		this.parentDir = parentDir;
-		this.childDirs = childDirs;
 	}
 
 	public Long getId() {
@@ -88,27 +76,11 @@ public class DirNode implements BaseNode, Serializable{
 		this.directoryName = directoryName;
 	}
 
-	public List<FileNode> getFileNodes() {
-		return fileNodes;
-	}
-
-	public void setFileNodes(List<FileNode> fileNodes) {
-		this.fileNodes = fileNodes;
-	}
-
 	public DirNode getParentDir() {
 		return parentDir;
 	}
 
 	public void setParentDir(DirNode parentDir) {
 		this.parentDir = parentDir;
-	}
-
-	public List<DirNode> getChildDirs() {
-		return childDirs;
-	}
-
-	public void setChildDirs(List<DirNode> childDirs) {
-		this.childDirs = childDirs;
 	}
 }

@@ -32,9 +32,9 @@ public class DirNodeTest extends BaseTest {
 	@Test
 	public void dirNodePersistenceTest() {
 		log.info("Starting dirNodePersistenceTest");
-		DirNode dn1 = new DirNode(null,"root1", null, null, null);
-		DirNode dn2 = new DirNode(null,"child1", null, dn1, null);
-		DirNode dn3 = new DirNode(null,"childchild1", null, dn2, null);
+		DirNode dn1 = new DirNode(null,"root1", null);
+		DirNode dn2 = new DirNode(null,"child1", dn1);
+		DirNode dn3 = new DirNode(null,"childchild1", dn2);
 		FileNode fn = new FileNode(null, "file111.fle", new Byte[]{1}, new Byte[]{2}, 100L, false, dn3);
 		log.info(".. Set up some nodes");
 		em().persist(dn1);
@@ -55,16 +55,10 @@ public class DirNodeTest extends BaseTest {
 		log.info(".. Found some persisted nodes");
 
 		assertEquals("Root dir directoryname mangled", dn1.getDirectoryName(), dn1P.getDirectoryName());
-		//assertNotNull("File list null!", dn1P.getFileNodes());
-		//assertEquals("Unexpected files in FileList", 0, dn1P.getFileNodes().size());
 		assertNull("Unexpected parent of root node.", dn1P.getParentDir());
-		//assertNotNull("ChildDir list null!", dn1P.getChildDirs());
-		//assertEquals("ChildDirs is too large!",1, dn1P.getChildDirs().size());
-		//assertTrue("ChildDir missing!",dn1P.getChildDirs().contains(dn2P));
-		assertEquals("Wrong parent dir!", dn1P, dn2P.getParentDir());
-		//assertNotNull("CC File list null!", dn3P.getFileNodes());
-		assertEquals("Wrong number of files in CC FileList", 1, dn3P.getFileNodes().size());
-		assertTrue("FileNode missing!", dn3P.getFileNodes().contains(fnP));
+		assertEquals("Wrong dn2 parent dir!", dn1P, dn2P.getParentDir());
+		assertEquals("Wrong dn3 parent dir!", dn2P, dn3P.getParentDir());
+		assertEquals("FileNode missing parent dir!", dn3P, fnP.getDirNode());
 	}
 
 	/**
@@ -78,7 +72,7 @@ public class DirNodeTest extends BaseTest {
 		log.info(".. created empty DirNode");
 		em().persist(dn);
 		log.info(".. persisted empty DirNode");
-		dn.setDirectoryName(null);
+		dn.setDirectoryName(null); //not allowed
 		dn.setParentDir(null); //allowed
 		em().flush();
 		log.info(".. flushed changes which should have failed");

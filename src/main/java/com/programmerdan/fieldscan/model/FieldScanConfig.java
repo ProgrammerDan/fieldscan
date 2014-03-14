@@ -54,13 +54,10 @@ public class FieldScanConfig implements Serializable{
 	@Column(name="is_parallel_deduplication", nullable=false)
 	private Boolean isParallelDeduplication;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="root_processor_id", 
 			referencedColumnName="id", nullable=false)
 	private NodeProcessorConfig rootProcessor;
-
-	@OneToMany(mappedBy="baseConfig",fetch=FetchType.LAZY)
-	private List<NodeProcessorConfig> registeredProcessors;
 
 	public FieldScanConfig() {
 		id = null;
@@ -68,18 +65,16 @@ public class FieldScanConfig implements Serializable{
 		description = null;
 		isParallelDeduplication= null;
 		rootProcessor = null;
-		registeredProcessors = null;
 	}
 
 	public FieldScanConfig(Long id, String configName, String description,
-			Boolean isParallelDeduplication, NodeProcessorConfig rootProcessor,
-			List<NodeProcessorConfig> registeredProcessors) {
+			Boolean isParallelDeduplication, 
+			NodeProcessorConfig rootProcessor) {
 		this.id = id;
 		this.configName = configName;
 		this.description = description;
 		this.isParallelDeduplication = isParallelDeduplication;
 		this.rootProcessor = rootProcessor;
-		this.registeredProcessors = registeredProcessors;
 	}
 
 	public Long getId() {
@@ -120,14 +115,5 @@ public class FieldScanConfig implements Serializable{
 
 	public void setRootProcessor(NodeProcessorConfig rootProcessor) {
 		this.rootProcessor = rootProcessor;
-	}
-
-	public List<NodeProcessorConfig> getRegisteredProcessors() {
-		return registeredProcessors;
-	}
-
-	public void setRegisteredProcessor(
-			List<NodeProcessorConfig> registeredProcessors) {
-		this.registeredProcessors = registeredProcessors;
 	}
 }

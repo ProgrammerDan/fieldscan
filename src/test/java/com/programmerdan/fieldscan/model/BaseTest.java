@@ -13,6 +13,11 @@ import org.junit.AfterClass;
 
 /**
  * Helper root class for tests to handle setting up entity objects and persistence context.
+ * 
+ * @author Daniel Boston <programmerdan@gmail.com>
+ * @since 0.1-SNAPSHOT
+ * @version 0.1-SNAPSHOT
+ *   Initial version of base class.
  */
 public class BaseTest {
 
@@ -47,16 +52,7 @@ public class BaseTest {
 
 	@BeforeClass
 	public static void setupClass() {
-		/*if (emf != null)
-			emf.close();*/
-
 		if (emf == null)
 			emf = Persistence.createEntityManagerFactory("com.programmerdan.fieldscan.test");
 	}
-
-	/*@AfterClass
-	public static void teardownClass(){
-		if (emf != null)
-			emf.close();
-	}*/
 }

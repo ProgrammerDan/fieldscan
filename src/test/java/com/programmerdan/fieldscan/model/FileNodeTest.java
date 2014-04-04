@@ -16,6 +16,9 @@ import javax.persistence.PersistenceException;
  */
 public class FileNodeTest extends BaseTest {
 
+	/**
+	 * Basic File Node test.
+	 */
 	@Test
 	public void fileNodePersistenceTest() {
 		DirNode dn = new DirNode(null,"root1", null);

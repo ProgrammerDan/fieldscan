@@ -27,10 +27,9 @@ public class DirNodeTest extends BaseTest {
 	private static final Logger log = LoggerFactory.getLogger(DirNode.class);
 	/**
 	 * Basic DirNode test, validating that all relationships are handled correctly and persistence is functioning.
-	 * TODO: this one test has many tests. Split them out.
 	 */
 	@Test
-	public void dirNodePersistenceTest() {
+	public void dirNodePersistenceParentDirTest() {
 		log.info("Starting dirNodePersistenceTest");
 		DirNode dn1 = new DirNode(null,"root1", null);
 		DirNode dn2 = new DirNode(null,"child1", dn1);
@@ -63,7 +62,6 @@ public class DirNodeTest extends BaseTest {
 
 	/**
 	 * Negative test for failure on no directoryname.
-	 * TODO: be more specific on exception.
 	 */
 	@Test(expected=PersistenceException.class)
 	public void dirNodeFailsOnPersistWithoutDirectoryNameTest() {
